@@ -1,19 +1,26 @@
-const loadData = async () => {
+const loadData = async (dataForShowMore) => {
+    document.getElementById('spinner').classList.remove('d-none');
+
     url = "https://openapi.programming-hero.com/api/ai/tools";
     const res = await fetch(url);
     const data = await res.json();
-    seeMore(data.data.tools);
+    seeMore(data.data.tools, dataForShowMore);
+
 
 }
-const seeMore = (dataArray) => {
-    console.log(dataArray.length)
-    if (dataArray.length > 6) {
+const seeMore = (dataArray, dataForShowMore) => {
+    const seeMoreButton = document.getElementById('seeMore');
+    if (dataArray.length && dataForShowMore > 6) {
         const sendCard = dataArray.slice(0, 6);
         // console.log(sendCard.length)
         singleData(sendCard);
+        seeMoreButton.classList.remove('d-none')
+
     }
     else {
         singleData(dataArray);
+        seeMoreButton.classList.add('d-none')
+
     }
 }
 const singleData = (arrayData) => {
@@ -61,5 +68,13 @@ const showData = (info) => {
     </div>
     `;
     divContainer.appendChild(addDiv);
+    document.getElementById('spinner').classList.add('d-none')
 }
-loadData();
+const seeMoreButton = document.getElementById('seeMore');
+
+seeMoreButton.addEventListener('click', function () {
+    loadData(0);
+    seeMoreButton.classList.add('d-none')
+    document.getElementById('spinner').classList.remove('d-none')
+})
+loadData(7);
