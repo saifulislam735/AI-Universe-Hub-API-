@@ -26,6 +26,7 @@ const seeMore = (dataArray, dataForShowMore) => {
 const singleData = (arrayData) => {
     arrayData.forEach(cardInfo => {
         showData(cardInfo);
+        console.log(cardInfo);
     });
 }
 const showData = (info) => {
@@ -59,7 +60,7 @@ const showData = (info) => {
                     <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
                     </svg>
                     <span>${info.published_in}</span>
-                    <button type="button" class="btn btn-primary ms-auto " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button onclick="modalShow(${info.id})"  type="button" class="btn btn-primary ms-auto " data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Details
                     </button>
               </small>
@@ -77,4 +78,10 @@ seeMoreButton.addEventListener('click', function () {
     seeMoreButton.classList.add('d-none')
     document.getElementById('spinner').classList.remove('d-none')
 })
+const modalShow = async (id) => {
+    url = `https://openapi.programming-hero.com/api/ai/tool/0${id}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log(data);
+}
 loadData(7);
