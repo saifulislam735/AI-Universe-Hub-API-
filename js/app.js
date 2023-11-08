@@ -147,7 +147,9 @@ const modalShow = (modalInfo) => {
             </div>
             <div class="col-sm-6">
                 <div class="card">
+                    
                     <img src="${modalInfo.image_link[0]}" class="card-img-top p-2 rounded-1 " alt="...">
+                    <span class="badge position-absolute  text-bg-danger p-2 end-0">94% accuracy</span>
                     <div class="card-body">
                     
                         <h5 class="card-title fw-bold text-center">Hi, how are you doing today?</h5>
