@@ -26,10 +26,12 @@ const seeMore = (dataArray, dataForShowMore) => {
 const singleData = (arrayData) => {
     arrayData.forEach(cardInfo => {
         showData(cardInfo);
-        console.log(cardInfo);
+        // console.log(cardInfo);
     });
 }
 const showData = (info) => {
+    // console.log(info);
+    // console.log(info.features);
     const divContainer = document.getElementById('divContainer');
     const addDiv = document.createElement('div');
     addDiv.innerHTML = `
@@ -60,7 +62,7 @@ const showData = (info) => {
                     <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
                     </svg>
                     <span>${info.published_in}</span>
-                    <button onclick="modalShow(${info.id})"  type="button" class="btn btn-primary ms-auto " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button onclick="modalLoad(${info.id})"  type="button" class="btn btn-primary ms-auto " data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Details
                     </button>
               </small>
@@ -78,10 +80,84 @@ seeMoreButton.addEventListener('click', function () {
     seeMoreButton.classList.add('d-none')
     document.getElementById('spinner').classList.remove('d-none')
 })
-const modalShow = async (id) => {
+const modalLoad = async (id) => {
     url = `https://openapi.programming-hero.com/api/ai/tool/0${id}`;
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data);
+    modalShow(data.data);
+}
+const modalShow = (modalInfo) => {
+    console.log(modalInfo);
+    const feature = modalInfo.features
+    console.log(feature[1].feature_name);
+    const modalBody = document.getElementById('modal-body');
+    modalBody.innerHTML = `
+        <div class="row  h-auto">
+            <div class="col-sm-6 ">
+                <div class="card">
+                    <div class="card-body bg-danger " style="border:solid 0.5px red; --bs-bg-opacity: .05;">
+                        <p class="fw-bold text-justify ">${modalInfo.description}</p>
+                        <div class="d-flex gap-1 justify-content-center">
+                            <div class="col-sm-4 bg-white rounded">
+                                <div class=" text-center text-success fw-bold   ">
+                                    <p class="p-2 mt-2 " >
+                                        ${modalInfo.pricing[0].price} <br>
+                                        ${modalInfo.pricing[0].plan}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 bg-white rounded">
+                                <div class=" text-center text-warning fw-bold">
+                                    <p class="p-2 mt-2 " >
+                                        ${modalInfo.pricing[1].price} <br>
+                                        ${modalInfo.pricing[1].plan}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 bg-white rounded ">
+                                <div class=" text-center text-danger fw-bold">
+                                    <p class="p-2 mt-2 " >
+                                        ${modalInfo.pricing[2].price} <br>
+                                        ${modalInfo.pricing[2].plan}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <div class="col-sm-6">
+                                <h5>Features:</h5>
+                                <ul>
+                                    <li>${modalInfo.features[1].feature_name}</li>
+                                    <li>${modalInfo.features[2].feature_name}</li>
+                                    <li>${modalInfo.features[3].feature_name}</li>
+                                </ul>
+                                
+                            </div>
+                            <div class="col-sm-6">
+                                <h5>Integrations:</h5>
+                                <li>${modalInfo.integrations[1]}</li>
+                                <li>${modalInfo.integrations[2]}</li>
+                                <li>${modalInfo.integrations[3]}</li>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                    
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <img src="${modalInfo.image_link[0]}" class="card-img-top p-2 rounded-1 " alt="...">
+                    <div class="card-body">
+                    
+                        <h5 class="card-title fw-bold text-center">Hi, how are you doing today?</h5>
+                        <p class="card-text text-center ">I'm doing well, thank you for asking. How can I assist you    today?
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
 }
 loadData(7);
